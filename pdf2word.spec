@@ -86,48 +86,73 @@ if sys.platform == "win32":
         ],
     )
 
-exe = EXE(
-    pyz,
-    a.scripts,
-    [],
-    exclude_binaries=True,
-    name="PDF2Word",
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=False,
-    console=False,  # windowed app — no console
-    disable_windowed_traceback=False,
-    target_arch=None,
-    codesign_identity=None,
-    entitlements_file=None,
-    icon=None,
-    version=win_version_info,
-)
-
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=False,
-    upx_exclude=[],
-    name="PDF2Word",
-)
-
-if sys.platform == "darwin":
-    app = BUNDLE(
-        coll,
-        name="PDF2Word.app",
+# --- Windows: onefile mode (single PDF2Word.exe) ------------------------
+# --- macOS:   onedir + BUNDLE (produces PDF2Word.app, which is already a
+#              single user-visible artifact) -----------------------------
+if sys.platform == "win32":
+    exe = EXE(
+        pyz,
+        a.scripts,
+        a.binaries,
+        a.zipfiles,
+        a.datas,
+        [],
+        name="PDF2Word",
+        debug=False,
+        bootloader_ignore_signals=False,
+        strip=False,
+        upx=False,
+        console=False,
+        disable_windowed_traceback=False,
+        target_arch=None,
+        codesign_identity=None,
+        entitlements_file=None,
         icon=None,
-        bundle_identifier="com.dinghui.pdf2word",
-        info_plist={
-            "CFBundleName": "PDF2Word",
-            "CFBundleDisplayName": "PDF 转 Word",
-            "CFBundleShortVersionString": VERSION,
-            "CFBundleVersion": VERSION,
-            "NSHighResolutionCapable": True,
-            "LSMinimumSystemVersion": "10.15.0",
-        },
+        version=win_version_info,
+        runtime_tmpdir=None,  # use system default %TEMP%\_MEIxxxx
     )
+else:
+    exe = EXE(
+        pyz,
+        a.scripts,
+        [],
+        exclude_binaries=True,
+        name="PDF2Word",
+        debug=False,
+        bootloader_ignore_signals=False,
+        strip=False,
+        upx=False,
+        console=False,
+        disable_windowed_traceback=False,
+        target_arch=None,
+        codesign_identity=None,
+        entitlements_file=None,
+        icon=None,
+    )
+
+    coll = COLLECT(
+        exe,
+        a.binaries,
+        a.zipfiles,
+        a.datas,
+        strip=False,
+        upx=False,
+        upx_exclude=[],
+        name="PDF2Word",
+    )
+
+    if sys.platform == "darwin":
+        app = BUNDLE(
+            coll,
+            name="PDF2Word.app",
+            icon=None,
+            bundle_identifier="com.dinghui.pdf2word",
+            info_plist={
+                "CFBundleName": "PDF2Word",
+                "CFBundleDisplayName": "PDF 转 Word",
+                "CFBundleShortVersionString": VERSION,
+                "CFBundleVersion": VERSION,
+                "NSHighResolutionCapable": True,
+                "LSMinimumSystemVersion": "10.15.0",
+            },
+        )

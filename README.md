@@ -26,7 +26,9 @@
 每次 push 到 `main` 或打 tag `v*`，GitHub Actions 会自动构建：
 
 - **macOS**：`PDF2Word.dmg`（arm64，Apple Silicon）
-- **Windows**：`PDF2Word-windows.zip`（解压后双击 `PDF2Word.exe`）
+- **Windows**：`PDF2Word.exe`（单文件，直接双击运行）
+
+> 💡 Windows 版首次启动会慢 5-10 秒——单文件里打包了所有依赖，运行时要解压到系统临时目录。之后启动会快一些（如果 temp 缓存没被清理）。
 
 下载位置：
 - 最新开发版：仓库 **Actions** 页 → 选一次 run → 底部 **Artifacts**
@@ -63,7 +65,7 @@ hdiutil create -volname PDF2Word -srcfolder dist/PDF2Word.app \
 
 ```cmd
 build_scripts\build-windows.bat
-REM 产物：dist\PDF2Word\PDF2Word.exe（整个文件夹一起分发）
+REM 产物：dist\PDF2Word.exe（单文件，直接分发）
 ```
 
 > ⚠️ PyInstaller 不支持跨平台编译，必须在目标系统上打包。推荐直接用项目里的 GitHub Actions workflow。

@@ -14,10 +14,10 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            artifact_name: PDF2Word-windows
-            artifact_path: dist/PDF2Word
+            artifact_name: PDF2Word-windows-exe
+            artifact_path: dist/PDF2Word.exe
           - os: macos-14  # Apple Silicon (arm64) runner
-            artifact_name: PDF2Word-macos
+            artifact_name: PDF2Word-macos-app
             artifact_path: dist/PDF2Word.app
 
     runs-on: ${{ matrix.os }}
@@ -46,7 +46,7 @@ jobs:
       - name: Build with PyInstaller
         run: pyinstaller pdf2word.spec --noconfirm --clean
 
-      # --- macOS: also produce a DMG --------------------------------------
+      # --- macOS: produce a DMG for release distribution ------------------
       - name: Create DMG (macOS)
         if: runner.os == 'macOS'
         run: |
@@ -61,21 +61,7 @@ jobs:
           name: PDF2Word-macos-dmg
           path: dist/PDF2Word.dmg
 
-      # --- Windows: zip the folder for a cleaner download -----------------
-      - name: Zip Windows build
-        if: runner.os == 'Windows'
-        run: |
-          Compress-Archive -Path dist/PDF2Word/* -DestinationPath dist/PDF2Word-windows.zip
-        shell: pwsh
-
-      - name: Upload Windows zip
-        if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v4
-        with:
-          name: PDF2Word-windows-zip
-          path: dist/PDF2Word-windows.zip
-
-      # --- Raw app/folder artifacts (in case the zip/dmg step ever fails) -
+      # --- Upload raw bundle (Windows: single .exe, macOS: .app folder) ---
       - name: Upload raw bundle
         uses: actions/upload-artifact@v4
         with:
@@ -99,5 +85,5 @@ jobs:
         with:
           files: |
             artifacts/PDF2Word-macos-dmg/PDF2Word.dmg
-            artifacts/PDF2Word-windows-zip/PDF2Word-windows.zip
+            artifacts/PDF2Word-windows-exe/PDF2Word.exe
           generate_release_notes: true
