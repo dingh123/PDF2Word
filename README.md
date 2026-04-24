@@ -105,6 +105,30 @@ pdf/
 
 ---
 
+## 版本管理
+
+版本号的单一来源是 **`src/__version__.py`**，改这一个文件即可。影响范围：
+
+- 窗口标题栏（`PDF 转 Word  v0.1.0`）
+- macOS `.app` 的 `CFBundleShortVersionString` / `CFBundleVersion`（Finder 显示、系统偏好设置）
+- Windows `.exe` 的文件属性版本信息（右键属性 → 详细信息）
+
+发版流程：
+
+```bash
+# 1. 改 src/__version__.py 里的版本号
+# 2. 提交并打 tag
+git add src/__version__.py
+git commit -m "chore: bump version to 0.2.0"
+git tag v0.2.0
+git push && git push origin v0.2.0
+# GitHub Actions 自动构建并创建 Release
+```
+
+建议 tag 名 (`v0.2.0`) 和版本号 (`0.2.0`) 保持一致。
+
+---
+
 ## 已知问题 & 注意
 
 1. **PyMuPDF 版本锁定在 `<1.25`**

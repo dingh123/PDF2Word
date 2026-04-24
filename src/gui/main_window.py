@@ -23,6 +23,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from __version__ import __version__
 from gui.worker import ConversionWorker
 
 
@@ -36,7 +37,7 @@ STATUS_CANCELLED = "已取消"
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("PDF 转 Word")
+        self.setWindowTitle(f"PDF 转 Word  v{__version__}")
         self.resize(820, 560)
         self.setAcceptDrops(True)
 
