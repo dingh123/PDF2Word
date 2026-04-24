@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//opt/homebrew/bin/**)",
+      "Read(//usr/local/bin/**)",
+      "Bash(command -v python3.11 python3.12 python3.10)",
+      "Bash(chmod +x *)",
+      "Bash(python3 -m venv .venv)",
+      "Bash(.venv/bin/pip install *)",
+      "Bash(.venv/bin/python -c ' *)",
+      "Bash(rm -f /tmp/test_output.docx)",
+      "Bash(.venv/bin/pip index *)",
+      "Bash(.venv/bin/pip show *)",
+      "Bash(.venv/bin/python *)",
+      "Bash(.venv/bin/pyinstaller pdf2word.spec --noconfirm --clean)",
+      "Bash(open dist/PDF2Word.app)",
+      "Bash(pkill -f PDF2Word)",
+      "Bash(sw_vers -productVersion)",
+      "Bash(hdiutil create *)"
+    ]
+  }
+}

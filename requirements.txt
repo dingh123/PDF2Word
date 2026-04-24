@@ -1,0 +1,5 @@
+pdf2docx>=0.5.8
+# pdf2docx 0.5.8 uses Rect.get_area() which was removed in PyMuPDF 1.25+.
+# Pin below 1.25 until pdf2docx releases a fix.
+pymupdf<1.25
+PyQt6>=6.6.0
